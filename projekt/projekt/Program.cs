@@ -18,13 +18,13 @@ namespace projekt
                 throw new ArgumentException("Array cannot be null or empty.");
             }
 
-            double sum = 0;
+            double SUMA = 0;
             foreach (int num in array)
             {
-                sum += num;
+                SUMA += num;
             }
 
-            return sum / array.Length;
+            return SUMA / array.Length;
         }
         
         public static double ReturnMax(int[] array)
