@@ -27,3 +27,4 @@ C:\Users\Franek\Desktop\APDB_s25925\projekt\projekt\obj\Debug\net8.0\refint\proj
 C:\Users\Franek\Desktop\APDB_s25925\projekt\projekt\obj\Debug\net8.0\projekt.pdb
 C:\Users\Franek\Desktop\APDB_s25925\projekt\projekt\obj\Debug\net8.0\projekt.genruntimeconfig.cache
 C:\Users\Franek\Desktop\APDB_s25925\projekt\projekt\obj\Debug\net8.0\ref\projekt.dll
+C:\Users\Franek\Desktop\APDB_s25925\projekt\projekt\obj\Debug\net8.0\projekt.sourcelink.json
