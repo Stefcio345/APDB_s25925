@@ -9,6 +9,7 @@ namespace projekt
             
             Console.WriteLine("Hello world");
             //Modyfikacja 1
+            //Modyfikacja 2
 
         }
     }
