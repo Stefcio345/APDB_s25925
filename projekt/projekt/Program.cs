@@ -7,7 +7,7 @@ namespace projekt
         static void Main(string[] args)
         {
             
-            Console.WriteLine(CalculateAverage([1,2,3,4,5]));
+            Console.WriteLine(ReturnMax([1,2,3,4,5]));
 
         }
         
@@ -27,6 +27,23 @@ namespace projekt
             return sum / array.Length;
         }
         
-        
+        public static double ReturnMax(int[] array)
+        {
+            if (array == null || array.Length == 0)
+            {
+                throw new ArgumentException("Array cannot be null or empty.");
+            }
+
+            int max = array[0];
+            foreach (int num in array)
+            {
+                if (num > max)
+                {
+                    max = num;
+                }
+            }
+
+            return max;
+        }
     }
 }
