@@ -8,6 +8,7 @@ namespace projekt
         {
             
             Console.WriteLine("Hello world");
+            //Modyfikacja 1
 
         }
     }
