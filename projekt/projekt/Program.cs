@@ -18,6 +18,7 @@ namespace projekt
                 throw new ArgumentException("Array cannot be null or empty.");
             }
 
+<<<<<<< HEAD
             double zmienna_suma = 0;
             foreach (int num in array)
             {
@@ -25,6 +26,15 @@ namespace projekt
             }
 
             return zmienna_suma / array.Length;
+=======
+            double SUMA = 0;
+            foreach (int num in array)
+            {
+                SUMA += num;
+            }
+
+            return SUMA / array.Length;
+>>>>>>> feature-new
         }
         
         public static double ReturnMax(int[] array)
