@@ -4,7 +4,11 @@ using System.Threading;
 
 namespace LegacyApp
 {
-    public class ClientRepository
+    public interface IClientRepository
+    {
+        public Client GetById(int clientId);
+    }
+    public class ClientRepository: IClientRepository
     {
         /// <summary>
         /// This collection is used to simulate remote database
