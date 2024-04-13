@@ -39,7 +39,7 @@ namespace LegacyApp
                 return false;
             }
 
-            UserDataAccess.AddUser(user);
+            AddUserToDataBase(user);
             return true;
         }
         
@@ -51,7 +51,8 @@ namespace LegacyApp
         {
             return !string.IsNullOrEmpty(name);
         }
-        public static bool IsValidEmail(string email)
+
+        private static bool IsValidEmail(string email)
         {
             return email.Contains('@') && email.Contains('.');
         }
@@ -94,6 +95,11 @@ namespace LegacyApp
         private Client RetrieveClientFromDatabase(int clientId)
         {
             return _clientRepository.GetById(clientId);
+        }
+
+        private void AddUserToDataBase(User user)
+        {
+            UserDataAccess.AddUser(user);
         }
 
     }
