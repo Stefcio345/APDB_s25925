@@ -11,17 +11,43 @@ public class AnimalService: IAnimalService
     {
         _animalRepository = animalRepository;
     }
-
-    //"39:52"
-    public IEnumerable<Animal> GetAnimal()
+    
+    public IEnumerable<IAnimalLike> GetAllAnimals(string orderBy)
     {
-        var data = _animalRepository.FetchAnimals();
-        return data;
+        //Logika biznesowa
+        var sortableBy = new HashSet<string>() { "name", "description", "category", "area"};
+
+        if (orderBy == "")
+        {
+            var data = _animalRepository.FetchAnimals("name");
+            return data;
+        }
+        else if (sortableBy.Contains(orderBy.ToLower()))
+        {
+            var data = _animalRepository.FetchAnimals(orderBy);
+            return data;
+        }
+        else
+        {
+            throw new ArgumentException("Cannot order by " + orderBy);
+        }
     }
 
-    public int CreateAnimal(Animal newAnimal)
+    public int CreateAnimal(IAnimalLike newAnimal)
     {
-        //_testAnimal.Add(newAnimal);
-        return 1;
+        //Logika biznesowa
+        return _animalRepository.CreateAnimal(newAnimal);
+    }
+
+    public int UpdateAnimal(int animalId, IAnimalLike animal)
+    {
+        //Logika biznesowa
+        return _animalRepository.UpdateAnimal(animalId, animal);
+    }
+
+    public int DeleteAnimal(int idAnimal)
+    {
+        //Logika biznesowa
+        return _animalRepository.DeleteAnimal(idAnimal);
     }
 }

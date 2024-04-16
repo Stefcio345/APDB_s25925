@@ -4,10 +4,8 @@ namespace Zadanie_3.Repositories;
 
 public interface IAnimalRepository
 {
-    IEnumerable<Animal> FetchAnimals();
-    int CreateAnimal(Animal animal);
-    Animal GetAnimal(int animalId);
-    int UpdateAnimal(Animal animal);
+    IEnumerable<IAnimalLike> FetchAnimals(string orderBy);
+    int CreateAnimal(IAnimalLike animal);
+    int UpdateAnimal(int animalId ,IAnimalLike animal);
     int DeleteAnimal(int animalId);
-
 }
