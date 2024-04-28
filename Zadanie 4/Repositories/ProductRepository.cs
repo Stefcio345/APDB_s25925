@@ -16,6 +16,37 @@ public class ProductRepository: IProductRepository
         throw new NotImplementedException();
     }
 
+    public Product getProduct(int idProduct)
+    {
+        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        con.Open();
+
+        using var cmd = new SqlCommand();
+        cmd.Connection = con;
+        cmd.CommandText = "SELECT * FROM Product WHERE IdProduct = @idProduct";
+        cmd.Parameters.AddWithValue("@idProduct", idProduct);
+
+        var de = cmd.ExecuteReader();
+        
+        if (de.HasRows)
+        {
+            de.Read();
+            var product = new Product()
+            {
+                IdProduct = (int)de["IdProduct"],
+                Name = de["Name"].ToString(),
+                Description = de["Description"].ToString(),
+                Price = (decimal)de["Price"]
+            };
+            con.Close();
+            return product;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
     public bool ProductExists(int idProduct)
     {
         var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);

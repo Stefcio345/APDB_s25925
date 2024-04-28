@@ -1,7 +1,9 @@
 using System.Net;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc;
 using Zadanie_4.Models;
 using Zadanie_4.Repositories;
+using Zadanie_4.Services;
 
 namespace Zadanie_4.Controllers;
 
@@ -9,26 +11,24 @@ namespace Zadanie_4.Controllers;
 [ApiController]
 public class WarehouseController: ControllerBase
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IWarehouseRepository _warehouseRepository;
+    private readonly IWarehouseService _warehouseService;
 
-    public WarehouseController(IProductRepository productRepository, IWarehouseRepository warehouseRepository)
+    public WarehouseController(IWarehouseService warehouseService)
     {
-        _productRepository = productRepository;
-        _warehouseRepository = warehouseRepository;
+        _warehouseService = warehouseService;
     }
 
     [HttpPost]
     public IActionResult AddProducts(AddProduct addProduct)
     {
-        if (addProduct.Amount > 0 && _productRepository.ProductExists(addProduct.IdProduct) && _warehouseRepository.WarehouseExists(addProduct.IdWarehouse))
+        switch (_warehouseService.AddProduct(addProduct))
         {
-            _productRepository.AddProductsToWarehouse(addProduct);
-            return StatusCode(StatusCodes.Status200OK);
-        }
-        else
-        {
-            return StatusCode(StatusCodes.Status400BadRequest);
+            case "Error":
+                return StatusCode(StatusCodes.Status400BadRequest);
+            case "OK":
+                return StatusCode(StatusCodes.Status200OK);
+            default:
+                return StatusCode(StatusCodes.Status400BadRequest); 
         }
     }
 }
