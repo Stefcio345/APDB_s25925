@@ -19,7 +19,7 @@ public class WarehouseRepository: IWarehouseRepository
 
         using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "SELECT * FROM Warehouse WHERE IdWarehouse = idWarehouse";
+        cmd.CommandText = "SELECT * FROM Warehouse WHERE IdWarehouse = @idWarehouse";
         cmd.Parameters.AddWithValue("@idWarehouse", idWarehouse);
 
         var de = cmd.ExecuteReader();
@@ -40,19 +40,5 @@ public class WarehouseRepository: IWarehouseRepository
         {
             return null;
         }
-    }
-    
-    public bool WarehouseExists(int idWarehouse)
-    {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
-        
-        using var cmd = new SqlCommand();
-        cmd.Connection = con;
-        cmd.CommandText = "SELECT COUNT(1) AS BOOL FROM s25925.Warehouse WHERE IdWarehouse = @IdWarehouse";
-        cmd.Parameters.AddWithValue("@IdWarehouse", idWarehouse);
-        var de = cmd.ExecuteReader();
-        de.Read();
-        return (int)de["BOOL"] == 1;
     }
 }

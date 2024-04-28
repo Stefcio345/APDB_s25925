@@ -32,12 +32,12 @@ public class WarehouseService: IWarehouseService
     public bool DataIsValid(AddProduct addProduct)
     {
         //Does product exist
-        if (!_productRepository.ProductExists(addProduct.IdProduct))
+        if (_productRepository.getProduct(addProduct.IdProduct) is null)
         {
             return false;
         }
         //Does warehouse exist
-        else if (!_warehouseRepository.WarehouseExists(addProduct.IdWarehouse))
+        else if (_warehouseRepository.getWarehouse(addProduct.IdWarehouse) is null)
         {
             return false;
         }
@@ -54,6 +54,7 @@ public class WarehouseService: IWarehouseService
 
     public bool OrderIsValid(AddProduct addProduct)
     {
-        return _orderRepository.OrderIsValid(addProduct.IdProduct, addProduct.Amount, addProduct.CreatedAt);
+        var order = _orderRepository.GetOrder(addProduct.IdProduct, addProduct.Amount, addProduct.CreatedAt);
+        return order is not null;
     }
 }
