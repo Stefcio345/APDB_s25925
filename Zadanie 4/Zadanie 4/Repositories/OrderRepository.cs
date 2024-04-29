@@ -12,22 +12,22 @@ public class OrderRepository: IOrderRepository
         _configuration = configuration;
     }
 
-    public Order GetOrder(int idProduct, int amount, DateTime createdAt)
+    public async Task<Order> GetOrder(int idProduct, int amount, DateTime createdAt)
     {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        await con.OpenAsync();
 
-        using var cmd = new SqlCommand();
+        await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "SELECT * FROM s25925.\"Order\" WHERE IdProduct = @idProduct AND Amount = @amount AND CreatedAt < @createdAt";
         cmd.Parameters.AddWithValue("@idProduct", idProduct);
         cmd.Parameters.AddWithValue("@amount", amount);
         cmd.Parameters.AddWithValue("@createdAt", createdAt);
 
-        var de = cmd.ExecuteReader();
+        var de = await cmd.ExecuteReaderAsync();
         if (de.HasRows)
         {
-            de.Read();
+            await de.ReadAsync();
             DateTime? fulfilledAt =
                 String.IsNullOrEmpty(de["FulfilledAt"].ToString()) ? null : DateTime.Parse(de["FulfilledAt"].ToString() ?? string.Empty);
             var order = new Order()
@@ -38,28 +38,26 @@ public class OrderRepository: IOrderRepository
                 CreatedAt = DateTime.Parse(de["CreatedAt"].ToString()),
                 FulfilledAt = fulfilledAt
             };
-            con.Close();
             return order;
         }
         else
         {
-            con.Close();
             return null;
         }
     }
     
-    public int UpdateFullfilled(int idOrder)
+    public async Task<int> UpdateFullfilled(int idOrder)
     {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        await con.OpenAsync();
 
-        using var cmd = new SqlCommand();
+        await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "UPDATE s25925.\"Order\" SET FulfilledAt = @now WHERE IdOrder = @idOrder";
         cmd.Parameters.AddWithValue("@idOrder", idOrder);
         cmd.Parameters.AddWithValue("@now", DateTime.Now);
 
-        var affectedCount = cmd.ExecuteNonQuery();
+        var affectedCount = await cmd.ExecuteNonQueryAsync();
         return affectedCount;
     }
 }

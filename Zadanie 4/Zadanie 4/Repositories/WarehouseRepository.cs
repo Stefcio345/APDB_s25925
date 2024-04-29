@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.SqlClient;
 using Zadanie_4.Models;
 
@@ -12,7 +13,7 @@ public class WarehouseRepository: IWarehouseRepository
         _configuration = configuration;
     }
 
-    public Warehouse getWarehouse(int idWarehouse)
+    public async Task<Warehouse> getWarehouse(int idWarehouse)
     {
         var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
@@ -40,5 +41,21 @@ public class WarehouseRepository: IWarehouseRepository
         {
             return null;
         }
+    }
+
+    public async Task<int> ExecuteProcedure(AddProduct addProduct)
+    {
+        await using var conn = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        
+        await conn.OpenAsync();
+        
+        await using var command = new SqlCommand("AddProductToWarehouse", conn) { CommandType = CommandType.StoredProcedure };
+        command.Parameters.Add(new SqlParameter("@Amount", addProduct.Amount));
+        command.Parameters.Add(new SqlParameter("@IdProduct", addProduct.IdProduct));
+        command.Parameters.Add(new SqlParameter("@IdWarehouse", addProduct.IdWarehouse));
+        command.Parameters.Add(new SqlParameter("@CreatedAt", addProduct.CreatedAt));
+        
+        var result = await command.ExecuteScalarAsync();
+        return (int)(decimal)result;
     }
 }

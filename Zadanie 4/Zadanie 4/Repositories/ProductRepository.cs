@@ -12,21 +12,21 @@ public class ProductRepository: IProductRepository
         _configuration = configuration;
     }
 
-    public Product getProduct(int idProduct)
+    public async Task<Product> getProduct(int idProduct)
     {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        await con.OpenAsync();
 
-        using var cmd = new SqlCommand();
+        await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "SELECT * FROM Product WHERE IdProduct = @idProduct";
         cmd.Parameters.AddWithValue("@idProduct", idProduct);
 
-        var de = cmd.ExecuteReader();
+        var de = await cmd.ExecuteReaderAsync();
         
         if (de.HasRows)
         {
-            de.Read();
+            await de.ReadAsync();
             var product = new Product()
             {
                 IdProduct = (int)de["IdProduct"],
@@ -34,7 +34,6 @@ public class ProductRepository: IProductRepository
                 Description = de["Description"].ToString(),
                 Price = (decimal)de["Price"]
             };
-            con.Close();
             return product;
         }
         else

@@ -12,20 +12,20 @@ public class Product_WarehouseRepository: IProduct_WarehouseRepository
         _configuration = configuration;
     }
     
-    public Product_Warehouse GetProduct_Warehouse(int idOrder)
+    public async Task<Product_Warehouse> GetProduct_Warehouse(int idOrder)
     {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        await con.OpenAsync();
 
-        using var cmd = new SqlCommand();
+        await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "SELECT * FROM s25925.Product_Warehouse WHERE IdOrder = @IdOrder";
         cmd.Parameters.AddWithValue("@idOrder", idOrder);
 
-        var de = cmd.ExecuteReader();
+        var de = await cmd.ExecuteReaderAsync();
         if (de.HasRows)
         {
-            de.Read();
+            await de.ReadAsync();
             var order = new Product_Warehouse()
             {
                 IdProductWarehouse = (int)de["IdProductWarehouse"],
@@ -36,22 +36,20 @@ public class Product_WarehouseRepository: IProduct_WarehouseRepository
                 Price = (decimal)de["Price"],
                 CreatedAt = DateTime.Parse(de["CreatedAt"].ToString()),
             };
-            con.Close();
             return order;
         }
         else
         {
-            con.Close();
             return null;
         }
     }
     
-    public int AddProductWarehouse(Product_Warehouse productWarehouse)
+    public async Task<int> AddProductWarehouse(Product_Warehouse productWarehouse)
     {
-        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
-        con.Open();
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        await con.OpenAsync();
 
-        using var cmd = new SqlCommand();
+        await using var cmd = new SqlCommand();
         cmd.Connection = con;
         cmd.CommandText = "INSERT INTO s25925.Product_Warehouse OUTPUT inserted.IdProductWarehouse VALUES(@IdWarehouse, @IdProduct, @IdOrder, @Amount, @Price, @Now);";
         cmd.Parameters.AddWithValue("@IdWarehouse", productWarehouse.IdWarehouse);
@@ -61,7 +59,7 @@ public class Product_WarehouseRepository: IProduct_WarehouseRepository
         cmd.Parameters.AddWithValue("@Price", productWarehouse.Price);
         cmd.Parameters.AddWithValue("@Now", DateTime.Now);
 
-        var insertedId = (int)cmd.ExecuteScalar();
-        return insertedId;
+        var insertedId = await cmd.ExecuteScalarAsync();
+        return (int)insertedId;
     }
 }

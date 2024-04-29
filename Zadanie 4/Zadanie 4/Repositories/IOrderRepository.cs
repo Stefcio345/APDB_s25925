@@ -4,6 +4,6 @@ namespace Zadanie_4.Repositories;
 
 public interface IOrderRepository
 {
-    public Order GetOrder(int idProduct, int amount, DateTime createdAt);
-    public int UpdateFullfilled(int idOrder);
+    public Task<Order> GetOrder(int idProduct, int amount, DateTime createdAt);
+    public Task<int> UpdateFullfilled(int idOrder);
 }

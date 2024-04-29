@@ -4,5 +4,5 @@ namespace Zadanie_4.Repositories;
 
 public interface IProductRepository
 {
-    Product getProduct(int idProduct);
+    Task<Product> getProduct(int idProduct);
 }

@@ -4,5 +4,6 @@ namespace Zadanie_4.Repositories;
 
 public interface IWarehouseRepository
 {
-    Warehouse getWarehouse(int idWarehouse);
+    Task<Warehouse> getWarehouse(int idWarehouse);
+    public Task<int> ExecuteProcedure(AddProduct addProduct);
 }
