@@ -25,7 +25,6 @@ public class OrderRepository: IOrderRepository
         cmd.Parameters.AddWithValue("@createdAt", createdAt);
 
         var de = cmd.ExecuteReader();
-        var orders = new List<Order>();
         if (de.HasRows)
         {
             de.Read();
@@ -47,5 +46,20 @@ public class OrderRepository: IOrderRepository
             con.Close();
             return null;
         }
+    }
+    
+    public int UpdateFullfilled(int idOrder)
+    {
+        var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
+        con.Open();
+
+        using var cmd = new SqlCommand();
+        cmd.Connection = con;
+        cmd.CommandText = "UPDATE s25925.\"Order\" SET FulfilledAt = @now WHERE IdOrder = @idOrder";
+        cmd.Parameters.AddWithValue("@idOrder", idOrder);
+        cmd.Parameters.AddWithValue("@now", DateTime.Now);
+
+        var affectedCount = cmd.ExecuteNonQuery();
+        return affectedCount;
     }
 }

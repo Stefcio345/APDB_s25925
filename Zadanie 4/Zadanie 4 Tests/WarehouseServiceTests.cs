@@ -10,6 +10,7 @@ public class WarehouseServiceTests
     private readonly ProductRepository _dummyProductRepository = new ProductRepository(new DummyConfiguration());
     private readonly WarehouseRepository _dummyWarehouseRepository = new WarehouseRepository(new DummyConfiguration());
     private readonly OrderRepository _dummyOrderRepository = new OrderRepository(new DummyConfiguration());
+    private readonly Product_WarehouseRepository _dummyProductWarehouseRpostiory = new Product_WarehouseRepository(new DummyConfiguration());
     
     [Fact]
     public void DataIsValid_Should_Return_False_When_Warehouse_Doesnt_Exist()
@@ -22,7 +23,7 @@ public class WarehouseServiceTests
             CreatedAt = DateTime.Parse("2024-04-28 16:50:01.440")
         };
         
-        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository);
+        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository, _dummyProductWarehouseRpostiory);
 
         var result = service.DataIsValid(addProduct);
         
@@ -39,7 +40,7 @@ public class WarehouseServiceTests
             CreatedAt = DateTime.Parse("2024-04-28 16:50:01.440")
         };
         
-        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository);
+        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository, _dummyProductWarehouseRpostiory);
 
         var result = service.DataIsValid(addProduct);
         
@@ -56,7 +57,7 @@ public class WarehouseServiceTests
             CreatedAt = DateTime.Parse("2024-04-28 16:50:01.440")
         };
         
-        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository);
+        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository, _dummyProductWarehouseRpostiory);
 
         var result = service.DataIsValid(addProduct);
         
@@ -73,7 +74,7 @@ public class WarehouseServiceTests
             CreatedAt = DateTime.Parse("2024-04-28 18:50:01.440")
         };
         
-        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository);
+        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository, _dummyProductWarehouseRpostiory);
 
         var result = service.OrderIsValid(addProduct);
         
@@ -90,7 +91,7 @@ public class WarehouseServiceTests
             CreatedAt = DateTime.Parse("2024-04-28T21:50:01.440Z")
         };
         
-        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository);
+        var service = new WarehouseService(_dummyProductRepository, _dummyWarehouseRepository, _dummyOrderRepository, _dummyProductWarehouseRpostiory);
 
         var result = service.OrderIsValid(addProduct);
         

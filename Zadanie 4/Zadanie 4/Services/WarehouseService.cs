@@ -8,24 +8,41 @@ public class WarehouseService: IWarehouseService
     private readonly IProductRepository _productRepository;
     private readonly IWarehouseRepository _warehouseRepository;
     private readonly IOrderRepository _orderRepository;
+    private readonly IProduct_WarehouseRepository _productWarehouseRepository;
 
-    public WarehouseService(IProductRepository productRepository, IWarehouseRepository warehouseRepository, IOrderRepository orderRepository)
+    public WarehouseService(IProductRepository productRepository, IWarehouseRepository warehouseRepository, IOrderRepository orderRepository, IProduct_WarehouseRepository productWarehouseRepository)
     {
         _productRepository = productRepository;
         _warehouseRepository = warehouseRepository;
         _orderRepository = orderRepository;
+        _productWarehouseRepository = productWarehouseRepository;
     }
 
     public string AddProduct(AddProduct addProduct)
     {
+        //1. i 2.
         if (DataIsValid(addProduct) && OrderIsValid(addProduct))
         {
-            _productRepository.AddProductsToWarehouse(addProduct);
-            return "OK";
+            //3.
+            //Get order
+            var order = _orderRepository.GetOrder(addProduct.IdProduct, addProduct.Amount, addProduct.CreatedAt);
+            if (OrderWasAlreadyDone(order))
+            {
+                return "Order is already done";
+            }
+            else
+            {
+                //4.
+                _orderRepository.UpdateFullfilled(order.IdOrder);
+                //5.
+                var insertedId = _productWarehouseRepository.AddProductWarehouse(CreateProductWarehouse(addProduct, order));
+                
+                return insertedId.ToString();
+            }
         }
         else
         {
-            return "Error";
+            return "Data is invalid";
         }
     }
 
@@ -56,5 +73,24 @@ public class WarehouseService: IWarehouseService
     {
         var order = _orderRepository.GetOrder(addProduct.IdProduct, addProduct.Amount, addProduct.CreatedAt);
         return order is not null;
+    }
+
+    public bool OrderWasAlreadyDone(Order order)
+    {
+        return _productWarehouseRepository.GetProduct_Warehouse(order.IdOrder) is not null;
+    }
+
+    public Product_Warehouse CreateProductWarehouse(AddProduct addProduct, Order order)
+    {
+        return new Product_Warehouse()
+        {
+            IdProductWarehouse = null,
+            IdWarehouse = addProduct.IdWarehouse,
+            IdProduct = addProduct.IdProduct,
+            IdOrder = order.IdOrder,
+            Amount = addProduct.Amount,
+            Price = _productRepository.getProduct(addProduct.IdProduct).Price * addProduct.Amount,
+            CreatedAt = DateTime.Now
+        };
     }
 }

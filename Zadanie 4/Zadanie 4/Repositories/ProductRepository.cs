@@ -11,10 +11,6 @@ public class ProductRepository: IProductRepository
     {
         _configuration = configuration;
     }
-    public int AddProductsToWarehouse(AddProduct addProduct)
-    {
-        throw new NotImplementedException();
-    }
 
     public Product getProduct(int idProduct)
     {

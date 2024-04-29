@@ -21,14 +21,12 @@ public class WarehouseController: ControllerBase
     [HttpPost]
     public IActionResult AddProducts(AddProduct addProduct)
     {
-        switch (_warehouseService.AddProduct(addProduct))
+        var result = _warehouseService.AddProduct(addProduct);
+        return result switch
         {
-            case "Error":
-                return StatusCode(StatusCodes.Status400BadRequest);
-            case "OK":
-                return StatusCode(StatusCodes.Status200OK);
-            default:
-                return StatusCode(StatusCodes.Status400BadRequest); 
-        }
+            "Order is already done" => StatusCode(StatusCodes.Status400BadRequest),
+            "Data is invalid" => StatusCode(StatusCodes.Status400BadRequest),
+            _ => Content("Data inserted successfully, ID of new Product in warehouse: " + result)
+        };
     }
 }
