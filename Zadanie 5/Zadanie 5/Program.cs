@@ -1,3 +1,6 @@
+using Zadanie_5.Context;
+using Zadanie_5.Controllers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddDbContext<S25925Context>();
 
 var app = builder.Build();
 
