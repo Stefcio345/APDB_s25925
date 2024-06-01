@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zadanie_5.Context;
 
@@ -11,9 +12,11 @@ using Zadanie_5.Context;
 namespace Zadanie_6.Migrations
 {
     [DbContext(typeof(S25925Context))]
-    partial class S25925ContextModelSnapshot : ModelSnapshot
+    [Migration("20240601104556_Perscription-MedicamentMigration2")]
+    partial class PerscriptionMedicamentMigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,13 +181,13 @@ namespace Zadanie_6.Migrations
             modelBuilder.Entity("Zadanie_6.Models.Prescription_Medicament", b =>
                 {
                     b.HasOne("Zadanie_6.Models.Medicament", "Medicament")
-                        .WithMany("PrescriptionMedicaments")
+                        .WithMany()
                         .HasForeignKey("IdMedicament")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Zadanie_6.Models.Prescription", "Prescription")
-                        .WithMany("PrescriptionMedicaments")
+                        .WithMany()
                         .HasForeignKey("IdPrescription")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -199,19 +202,9 @@ namespace Zadanie_6.Migrations
                     b.Navigation("Prescriptions");
                 });
 
-            modelBuilder.Entity("Zadanie_6.Models.Medicament", b =>
-                {
-                    b.Navigation("PrescriptionMedicaments");
-                });
-
             modelBuilder.Entity("Zadanie_6.Models.Patient", b =>
                 {
                     b.Navigation("Prescriptions");
-                });
-
-            modelBuilder.Entity("Zadanie_6.Models.Prescription", b =>
-                {
-                    b.Navigation("PrescriptionMedicaments");
                 });
 #pragma warning restore 612, 618
         }

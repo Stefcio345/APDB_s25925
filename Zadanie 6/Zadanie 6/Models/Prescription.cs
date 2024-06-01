@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Zadanie_6.Models;
 
-public class Prescription
+public partial class Prescription
 {
     [Key]
     public int IdPrescription { get; set; }
@@ -13,9 +14,14 @@ public class Prescription
     [Required]
     public DateTime DueDate { get; set; }
 
+    public int IdDoctor { get; set; }
+    [ForeignKey(nameof(IdDoctor))]
     public Doctor Doctor { get; set; }
-    
+
+    public int IdPatient { get; set; }
+    [ForeignKey(nameof(IdPatient))]
     public Patient Patient { get; set; }
 
-    public ICollection<Prescription_Medicament> PrescriptionMedicaments { get; set; }
+    public virtual ICollection<Prescription_Medicament> PrescriptionMedicaments { get; set; } =
+        new List<Prescription_Medicament>();
 }

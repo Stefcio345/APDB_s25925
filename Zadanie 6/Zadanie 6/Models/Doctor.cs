@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace Zadanie_6.Models;
 
-public class Doctor
+public partial class Doctor: IDoctor
 {
     [Key]
     public int IdDoctor { get; set; }
@@ -18,6 +19,6 @@ public class Doctor
     [Required]
     [MaxLength(100)]
     public string Email { get; set; }
-
-    public ICollection<Prescription> Prescriptions { get; set; }
+    
+    public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 }

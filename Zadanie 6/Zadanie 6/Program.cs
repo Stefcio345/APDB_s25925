@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Zadanie_5.Context;
+using Zadanie_6.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<S25925Context>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IMedicamentService, MedicamentService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
 
 var app = builder.Build();
 

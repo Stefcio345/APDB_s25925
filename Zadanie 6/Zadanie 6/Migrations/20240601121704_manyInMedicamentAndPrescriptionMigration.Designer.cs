@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zadanie_5.Context;
 
@@ -11,9 +12,11 @@ using Zadanie_5.Context;
 namespace Zadanie_6.Migrations
 {
     [DbContext(typeof(S25925Context))]
-    partial class S25925ContextModelSnapshot : ModelSnapshot
+    [Migration("20240601121704_manyInMedicamentAndPrescriptionMigration")]
+    partial class manyInMedicamentAndPrescriptionMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

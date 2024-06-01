@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Zadanie_6.Models;
 
-public class Medicament
+public partial class Medicament
 {
     [Key]
     public int IdMedicament { get; set; }
@@ -19,5 +19,6 @@ public class Medicament
     [Required]
     public string Type { get; set; }
 
-    public ICollection<Prescription_Medicament> PrescriptionMedicaments { get; set; }
+    public virtual ICollection<Prescription_Medicament> PrescriptionMedicaments { get; set; } =
+        new List<Prescription_Medicament>();
 }

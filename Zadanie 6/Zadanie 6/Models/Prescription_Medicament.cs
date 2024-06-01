@@ -1,15 +1,21 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zadanie_6.Models;
 
-public class Prescription_Medicament
+[PrimaryKey(nameof(IdMedicament), nameof(IdPrescription))]
+public partial class Prescription_Medicament
 {
-    [Key]
-    public Medicament Medicament { get; set; }
     
-    [Key]
-    public Prescription Prescription { get; set; }
+    public int IdMedicament { get; set; }
+    [ForeignKey(nameof(IdMedicament))] 
+    public Medicament Medicament { get; set; } = null!;
+    
+    public int IdPrescription { get; set; }
+    [ForeignKey(nameof(IdPrescription))] 
+    public Prescription Prescription { get; set; } = null!;
     
     public int Dose { get; set; }
     

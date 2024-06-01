@@ -3,7 +3,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Zadanie_6.Models;
 
-public class Patient
+public partial class Patient: IPatient
 {
     [Key]
     public int IdPatient { get; set; }
@@ -18,6 +18,5 @@ public class Patient
     
     [Required]
     public DateTime BirthDate { get; set; }
-
-    public ICollection<Prescription> Prescriptions { get; set; }
+    public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 }

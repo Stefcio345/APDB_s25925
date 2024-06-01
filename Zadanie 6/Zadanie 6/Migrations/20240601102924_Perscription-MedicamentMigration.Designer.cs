@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zadanie_5.Context;
 
@@ -11,9 +12,11 @@ using Zadanie_5.Context;
 namespace Zadanie_6.Migrations
 {
     [DbContext(typeof(S25925Context))]
-    partial class S25925ContextModelSnapshot : ModelSnapshot
+    [Migration("20240601102924_Perscription-MedicamentMigration")]
+    partial class PerscriptionMedicamentMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,29 +136,6 @@ namespace Zadanie_6.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("Zadanie_6.Models.Prescription_Medicament", b =>
-                {
-                    b.Property<int>("IdMedicament")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPrescription")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Dose")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdMedicament", "IdPrescription");
-
-                    b.HasIndex("IdPrescription");
-
-                    b.ToTable("PrescriptionMedicaments");
-                });
-
             modelBuilder.Entity("Zadanie_6.Models.Prescription", b =>
                 {
                     b.HasOne("Zadanie_6.Models.Doctor", "Doctor")
@@ -175,43 +155,14 @@ namespace Zadanie_6.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("Zadanie_6.Models.Prescription_Medicament", b =>
-                {
-                    b.HasOne("Zadanie_6.Models.Medicament", "Medicament")
-                        .WithMany("PrescriptionMedicaments")
-                        .HasForeignKey("IdMedicament")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Zadanie_6.Models.Prescription", "Prescription")
-                        .WithMany("PrescriptionMedicaments")
-                        .HasForeignKey("IdPrescription")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medicament");
-
-                    b.Navigation("Prescription");
-                });
-
             modelBuilder.Entity("Zadanie_6.Models.Doctor", b =>
                 {
                     b.Navigation("Prescriptions");
                 });
 
-            modelBuilder.Entity("Zadanie_6.Models.Medicament", b =>
-                {
-                    b.Navigation("PrescriptionMedicaments");
-                });
-
             modelBuilder.Entity("Zadanie_6.Models.Patient", b =>
                 {
                     b.Navigation("Prescriptions");
-                });
-
-            modelBuilder.Entity("Zadanie_6.Models.Prescription", b =>
-                {
-                    b.Navigation("PrescriptionMedicaments");
                 });
 #pragma warning restore 612, 618
         }
