@@ -58,29 +58,24 @@ public class PrescriptionController: ControllerBase
             Patient = patient
         };
 
-        if (_prescriptionService.PrescriptionIsValid(newPrescription))
+        if (_prescriptionService.PrescriptionIsValid(newPrescription) && _prescriptionService.CorrectNumberOfMedicaments(addPrescription.Medicaments))
         {
+            // Add Prescription
             _dbContext.Attach(newPrescription);
             _dbContext.SaveChanges();
-            if (_prescriptionService.CorrectNumberOfMedicaments(addPrescription.Medicaments))
+            foreach (var medicamentPrescritpion in addPrescription.Medicaments)
             {
-                foreach (var medicamentPrescritpion in addPrescription.Medicaments)
+                _dbContext.PrescriptionMedicaments.Add(new Prescription_Medicament()
                 {
-                    _dbContext.PrescriptionMedicaments.Add(new Prescription_Medicament()
-                    {
-                        IdMedicament = medicamentPrescritpion.IdMedicament,
-                        IdPrescription = newPrescription.IdPrescription,
-                        Dose = medicamentPrescritpion.Dose,
-                        Details = medicamentPrescritpion.Description
-                    });
-                }
-                _dbContext.SaveChanges();
-                return Ok("Prescription added succesfully");
+                    IdMedicament = medicamentPrescritpion.IdMedicament,
+                    IdPrescription = newPrescription.IdPrescription,
+                    Dose = medicamentPrescritpion.Dose,
+                    Details = medicamentPrescritpion.Description
+                });
             }
-            else
-            {
-                return ValidationProblem("Too many medicaments for prescription");
-            }
+            // Add medicaments to prescription
+            _dbContext.SaveChanges();
+            return Ok("Prescription added succesfully");
         }
         else
         {
